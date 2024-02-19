@@ -10,6 +10,10 @@ interface ChatInfoProps {
 
 const ChatInfo = ({ isDelayed, isFollowersOnly }: ChatInfoProps) => {
 
+    console.log(isDelayed, "dell")
+    console.log(isFollowersOnly, "foo")
+
+
     const hint = useMemo(() => {
         if (isFollowersOnly && !isDelayed) {
             return "Only followers can chat"
@@ -43,9 +47,11 @@ const ChatInfo = ({ isDelayed, isFollowersOnly }: ChatInfoProps) => {
         return "";
     }, [isDelayed, isFollowersOnly])
 
+
     if (!isDelayed && !isFollowersOnly) {
         return null;
     }
+
 
 
     return (

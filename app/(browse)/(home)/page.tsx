@@ -1,9 +1,13 @@
-import React from 'react'
+import { Suspense } from "react";
 
-const HomePage = () => {
+import { Results, ResultsSkeleton } from "./_components/results";
+
+export default function Page() {
   return (
-    <div>HomePage</div>
-  )
-}
-
-export default HomePage
+    <div className="h-full p-8 max-w-screen-2xl mx-auto">
+      <Suspense fallback={<ResultsSkeleton />}>
+        <Results />
+      </Suspense>
+    </div>
+  );
+};

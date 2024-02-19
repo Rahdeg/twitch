@@ -119,7 +119,7 @@ export const getBlockedUsers = async () => {
       blockerId: self.id,
     },
     include: {
-      blocker: true,
+      blocked: true,
     },
   });
 

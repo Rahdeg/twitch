@@ -8,19 +8,34 @@ import { useChatSidebar } from '@/store/use-chat-sidebar'
 import { cn } from '@/lib/utils'
 import Chat, { ChatSkeleton } from './chat'
 import ChatToggle from './chat-toggle'
-import { ChatHeaderSkeleton } from './chat-header'
 import Header, { HeaderSkeleton } from './header'
 import InfoCard from './info-card'
 import { AboutCard } from './about-card'
 
 
+type CustomStream = {
+    id: string;
+    isChatEnabled: boolean;
+    isChatDelayed: boolean;
+    isChatFollowersOnly: boolean;
+    isLive: boolean;
+    thumbnailUrl: string | null;
+    name: string;
+};
+
+type CustomUser = {
+    id: string;
+    username: string;
+    bio: string | null;
+    stream: CustomStream | null;
+    imageUrl: string;
+    _count: { followedBy: number }
+};
+
 interface StreamPlayerProps {
-    user: User & {
-        stream: Stream | null,
-        _count: { followedBy: number }
-    }
-    stream: Stream
-    isFollowing: boolean
+    user: CustomUser;
+    stream: CustomStream;
+    isFollowing: boolean;
 }
 
 const StreamPlayer = ({ user, stream, isFollowing }: StreamPlayerProps) => {
@@ -64,7 +79,7 @@ const StreamPlayer = ({ user, stream, isFollowing }: StreamPlayerProps) => {
 
                 </div>
                 <div className={cn("col-span-1", collapsed && "hidden")}>
-                    <Chat viewerName={name} hostName={user.id} hostIdentity={user.id} isFollowing={isFollowing} isChatEnabled={stream.isChatEnabled} isChatDelayed={stream.isChatDelayed} isChatFollowersOnly={stream.isChatFollowersOnly} />
+                    <Chat viewerName={name} hostName={user.username} hostIdentity={user.id} isFollowing={isFollowing} isChatEnabled={stream.isChatEnabled} isChatDelayed={stream.isChatDelayed} isChatFollowersOnly={stream.isChatFollowersOnly} />
                 </div>
             </LiveKitRoom>
         </>
