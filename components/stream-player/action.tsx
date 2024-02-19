@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import { useTransition } from "react"
 import { toast } from "sonner"
-import { onFollow, onUnFollow } from "@/actions/follow."
+import { onFollow, onUnfollow } from "@/actions/follow."
 import { Skeleton } from "../ui/skeleton"
 
 interface ActionsProps {
@@ -29,7 +29,7 @@ const Actions = ({ isFollowing, hostIdentity, isHost }: ActionsProps) => {
 
     const handleUnFollow = () => {
         startTransistion(() => {
-            onUnFollow(hostIdentity).
+            onUnfollow(hostIdentity).
                 then((data) => toast.success(`You have unfollowed ${data.following.username}`))
                 .catch(() => toast.error("Something went wrong"))
         })

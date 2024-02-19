@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { getself } from "@/lib/auth-service";
+import { getself } from "./auth-service";
 
 export const isBlockedByUser = async (id: string) => {
   try {
@@ -17,10 +17,12 @@ export const isBlockedByUser = async (id: string) => {
       return false;
     }
 
-    const existingBlock = await db.block.findFirst({
+    const existingBlock = await db.block.findUnique({
       where: {
-        blockerId: otherUser.id,
-        blockedId: self.id,
+        blockerId_blockedId: {
+          blockerId: otherUser.id,
+          blockedId: self.id,
+        },
       },
     });
 
@@ -48,8 +50,8 @@ export const blockUser = async (id: string) => {
   const existingBlock = await db.block.findUnique({
     where: {
       blockerId_blockedId: {
-        blockerId: otherUser.id,
-        blockedId: self.id,
+        blockerId: self.id,
+        blockedId: otherUser.id,
       },
     },
   });
@@ -60,11 +62,11 @@ export const blockUser = async (id: string) => {
 
   const block = await db.block.create({
     data: {
-      blockerId: otherUser.id,
-      blockedId: self.id,
+      blockerId: self.id,
+      blockedId: otherUser.id,
     },
     include: {
-      blocker: true,
+      blocked: true,
     },
   });
 
@@ -89,8 +91,8 @@ export const unblockUser = async (id: string) => {
   const existingBlock = await db.block.findUnique({
     where: {
       blockerId_blockedId: {
-        blockerId: otherUser.id,
-        blockedId: self.id,
+        blockerId: self.id,
+        blockedId: otherUser.id,
       },
     },
   });
@@ -104,7 +106,7 @@ export const unblockUser = async (id: string) => {
       id: existingBlock.id,
     },
     include: {
-      blocker: true,
+      blocked: true,
     },
   });
 
